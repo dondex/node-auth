@@ -1,0 +1,130 @@
+<% function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+        return text.substring(0, maxLength) + '...';
+    }
+    return text;
+} %>
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>My Blogs</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap">
+    <link rel="stylesheet" href="/assets/css/baguetteBox.min.css">
+    <link rel="stylesheet" href="/assets/css/vanilla-zoom.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top bg-body clean-navbar navbar-light">
+        <div class="container">
+            <a class="navbar-brand logo" href="/">My Blogs</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <div class="navbar-nav ms-auto"></div>
+                <a href="/add"><button class="btn btn-primary" type="button" href>POST BLOG</button></a>
+            </div>
+        </div>
+    </nav>
+    <main class="page blog-post-list">
+        <section class="clean-block clean-blog-list dark">
+            <div class="container">
+                <div class="block-heading">
+                    <h2 class="text-info">Blog Posts</h2>
+                    <p>Welcome to my blog!</p>
+                </div>
+                <div class="block-content">
+                    <div class="clean-blog-post">
+                        <% if (results.length === 0) { %>
+                            <br><br><br>
+                            <h5 class="text-center text-muted">You haven't posted a blog yet.</h5>
+                        <% } %>
+                        <% results.forEach(element => { %>
+                        <div class="row" style="padding-bottom: 5%;">
+                            <div class="card" style="position: relative; padding: 0;">
+                                <div class="card-buttons" style="position: absolute; top: 10px; right: 10px; z-index: 1;">
+                                    <a href="/edit/<%= element.id %>"><button class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square" style="margin: 0;"></i></button></a>
+                                    <a href="javascript:void(0);" onclick="deleteblog(event, '<%= element.id %>')"><button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash" style="margin: 0;"></i></button></a>
+                                </div>
+                                <div class="card-body" style="margin-top: 3%;">
+                                    <a href="/view/<%= element.id %>" style="text-decoration: none;"><h3 class="card-title"><%= element.title %></h3></a>
+                                    <p class="card-text"><%= truncateText(element.content, 270) %></p>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Posted on <%= moment(element.date).format('MMMM D, YYYY h:mm a') %>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets/js/baguetteBox.min.js"></script>
+    <script src="/assets/js/vanilla-zoom.js"></script>
+    <script src="/assets/js/theme.js"></script>
+    <script>
+        function deleteblog(event, blogId) {
+            event.preventDefault();
+    
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    }).then(() => {
+                        // Redirect to the delete route with the blog ID
+                        window.location.href = '/delete/' + blogId;
+                    });
+                }
+            });
+        }
+    </script>
+    <script>
+        // Function to get query parameters from the URL
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+    
+        // Check for the success parameter and display SweetAlert with appropriate message
+        document.addEventListener('DOMContentLoaded', () => {
+            const successParam = getQueryParam('success');
+            const operationParam = getQueryParam('operation');
+    
+            if (successParam === 'true') {
+                let title, text;
+    
+                if (operationParam === 'add') {
+                    title = "Success";
+                    text = "Your blog has been added successfully!";
+                } else if (operationParam === 'edit') {
+                    title = "Success";
+                    text = "Your blog has been updated successfully!";
+                }
+    
+                Swal.fire({
+                    title: title,
+                    text: text,
+                    icon: "success"
+                });
+            }
+        });
+    </script>    
+</body>
+
+</html>

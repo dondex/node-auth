@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <title>My Blog</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
+    />
+    <link rel="stylesheet" href="/assets/css/baguetteBox.min.css" />
+    <link rel="stylesheet" href="/assets/css/vanilla-zoom.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+
+  <body>
+    <nav
+      class="navbar navbar-expand-lg fixed-top bg-body clean-navbar navbar-light"
+    >
+      <div class="container">
+        <a class="navbar-brand logo" href="/userIndex"
+          ><i class="fa-solid fa-arrow-left"></i
+          >&nbsp;&nbsp;&nbsp;&nbsp;Blogs</a
+        ><button
+          data-bs-toggle="collapse"
+          class="navbar-toggler"
+          data-bs-target="#navcol-1"
+        >
+          <span class="visually-hidden">Toggle navigation</span
+          ><span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+          <ul class="navbar-nav ms-auto"></ul>
+        </div>
+      </div>
+    </nav>
+    <main class="page blog-post">
+      <section
+        class="clean-block clean-post"
+        style="background-image: url(/assets/img/others/1.jpg.webp)"
+      >
+        <div class="container">
+          <div class="block-content">
+            <% results.forEach(element => { %>
+            <div class="post-body">
+              <center>
+                <img
+                  src="/assets/img/others/blog1.jpg"
+                  alt=""
+                  style="width: 1000px; height: 500px"
+                /><br /><br />
+                <h3><%= element.title %></h3>
+                <h5 class="card-title"><%= element.subtitle %></h5>
+              </center>
+              <br />
+              <p style="text-align: justify; white-space: pre-line">
+                <%= element.content %>
+              </p>
+              <div class="post-info">
+                Posted on <%= moment(element.date).format('MMMM D, YYYY h:mm a')
+                %>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets/js/baguetteBox.min.js"></script>
+    <script src="/assets/js/vanilla-zoom.js"></script>
+    <script src="/assets/js/theme.js"></script>
+  </body>
+</html>
